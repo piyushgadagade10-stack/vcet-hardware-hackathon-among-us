@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>COSMIC CREW // 30H Among Us Hackathon 2026</title>
+  <meta name="description" content="Cosmic Crew - A 30-Hour Among Us themed hackathon experience packed with neon energy, ship tasks, live arcade countdown, and ₹1,05,000 in rewards." />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+</head>
+<body>
+
+  <!-- Dynamic Canvas Background (Stars, Floating Crewmates, Asteroids) -->
+  <canvas id="space-canvas"></canvas>
+
+  <!-- Cyberpunk Scanlines & Grid Overlays -->
+  <div class="cyber-grid-overlay"></div>
+  <div id="crt-overlay"></div>
+
+  <!-- ==========================================
+       1. AIRLOCK ENTRY GATE (PRE-PAGE OVERLAY)
+       ========================================== -->
+  <div id="airlock-gate" class="airlock-overlay">
+    <div class="airlock-door-left"></div>
+    <div class="airlock-door-right"></div>
+
+    <div class="airlock-center-console">
+      <div class="airlock-warning-strip">
+        <span>⚠</span>
+        <span>EMERGENCY TRANSMISSION INCOMING</span>
+        <span>⚠</span>
+      </div>
+
+      <h1 class="airlock-title">COSMIC CREW</h1>
+      <p class="airlock-sub">// 30-HOUR HACKATHON PROTOCOL</p>
+
+      <div class="airlock-avatar-preview">
+        <svg id="airlock-crew-preview" viewBox="0 0 100 120" width="100%" height="100%">
+          <!-- Backpack -->
+          <rect x="15" y="40" width="20" height="50" rx="8" class="crew-shadow-fill" fill="#7a0838" stroke="#000" stroke-width="4" />
+          <rect x="18" y="44" width="14" height="42" rx="6" class="crew-body-fill" fill="#c51111" />
+          <!-- Main Bean Body -->
+          <path d="M40,25 C60,25 75,35 75,60 L75,95 L60,95 L60,82 L45,82 L45,95 L30,95 L30,60 C30,35 40,25 40,25 Z" class="crew-body-fill" fill="#c51111" stroke="#000" stroke-width="4" />
+          <path d="M30,75 C45,85 65,85 75,75 L75,95 L60,95 L60,82 L45,82 L45,95 L30,95 Z" class="crew-shadow-fill" fill="#7a0838" />
+          <!-- Visor -->
+          <rect x="52" y="38" width="36" height="22" rx="10" fill="#000" />
+          <rect x="54" y="40" width="32" height="18" rx="8" fill="#72a9be" />
+          <rect x="58" y="43" width="18" height="6" rx="3" fill="#c5eaf8" />
+          <circle cx="60" cy="45" r="1.5" fill="#fff" />
+        </svg>
+      </div>
+
+      <div class="airlock-crew-selector">
+        <span class="crew-select-label" id="selected-crew-name">SELECT SUIT COLOR: [ RED CREWMATE ]</span>
+        <div class="crew-color-swatches">
+          <button class="airlock-crew-btn active" style="background:#c51111;" data-color="#c51111" data-shadow="#7a0838" data-name="Red" title="Red"></button>
+          <button class="airlock-crew-btn" style="background:#38fedc;" data-color="#38fedc" data-shadow="#24a89c" data-name="Cyan" title="Cyan"></button>
+          <button class="airlock-crew-btn" style="background:#50ef39;" data-color="#50ef39" data-shadow="#24941e" data-name="Lime" title="Lime"></button>
+          <button class="airlock-crew-btn" style="background:#ed54ba;" data-color="#ed54ba" data-shadow="#ab2b84" data-name="Pink" title="Pink"></button>
+          <button class="airlock-crew-btn" style="background:#f5f557;" data-color="#f5f557" data-shadow="#c2bc16" data-name="Yellow" title="Yellow"></button>
+          <button class="airlock-crew-btn" style="background:#6b2fbb;" data-color="#6b2fbb" data-shadow="#3b1770" data-name="Purple" title="Purple"></button>
+          <button class="airlock-crew-btn" style="background:#f07d0d;" data-color="#f07d0d" data-shadow="#b35203" data-name="Orange" title="Orange"></button>
+          <button class="airlock-crew-btn" style="background:#3f474e;" data-color="#3f474e" data-shadow="#1e2227" data-name="Black" title="Black"></button>
+        </div>
+      </div>
+
+      <button id="btn-enter-airlock" class="btn-arcade btn-enter-airlock">
+        <span>ENTER AIRLOCK // [PRESS START]</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       2. TOP NAVIGATION HUD
+       ========================================== -->
+  <header class="cosmic-navbar" id="main-navbar">
+    <div class="nav-container">
+      <a href="#hero" class="nav-logo-group">
+        <svg class="nav-crew-icon" viewBox="0 0 100 120">
+          <path d="M40,25 C60,25 75,35 75,60 L75,95 L60,95 L60,82 L45,82 L45,95 L30,95 L30,60 C30,35 40,25 40,25 Z" fill="#00f0ff" stroke="#000" stroke-width="4" />
+          <rect x="54" y="40" width="30" height="16" rx="8" fill="#72a9be" />
+        </svg>
+        <span class="nav-brand-text">COSMIC<span>CREW</span></span>
+        <span class="nav-status-pill">● LIVE 2026</span>
+      </a>
+
+      <nav>
+        <ul class="nav-links-desktop">
+          <li><a href="#tasks" class="nav-link">TASKS</a></li>
+          <li><a href="#timeline" class="nav-link">TIMELINE</a></li>
+          <li><a href="#vault" class="nav-link">PRIZE VAULT</a></li>
+          <li><a href="#sponsors" class="nav-link">SPONSORS</a></li>
+          <li><a href="#gallery" class="nav-link">MEMORIES</a></li>
+          <li><a href="#faq" class="nav-link">FAQ</a></li>
+          <li><a href="#contact" class="nav-link">COMMS</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button id="btn-audio-toggle" class="btn-ctrl" title="Toggle 8-Bit Sounds">
+          <span>🔊 SOUND: ON</span>
+        </button>
+        <button id="btn-crt-toggle" class="btn-ctrl" title="Toggle Retro CRT Scanlines">
+          <span>📺 CRT: ON</span>
+        </button>
+        <button class="btn-arcade btn-emergency btn-emergency-trigger">
+          <span>EMERGENCY!</span>
+        </button>
+        <button class="mobile-toggle" id="mobile-nav-toggle" aria-label="Toggle Navigation">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="mobile-nav-drawer" id="mobile-nav-drawer">
+    <a href="#tasks" class="drawer-link">// 01. MISSION TASKS</a>
+    <a href="#timeline" class="drawer-link">// 02. EVENT TIMELINE</a>
+    <a href="#vault" class="drawer-link">// 03. REWARD VAULT</a>
+    <a href="#sponsors" class="drawer-link">// 04. SPONSORS FLEET</a>
+    <a href="#gallery" class="drawer-link">// 05. CREW MEMORIES</a>
+    <a href="#faq" class="drawer-link">// 06. CENTRAL FAQ</a>
+    <a href="#contact" class="drawer-link">// 07. EMERGENCY COMMS</a>
+    <button class="btn-arcade btn-emergency btn-emergency-trigger mt-6">
+      CALL EMERGENCY MEETING
+    </button>
+  </div>
+
+  <!-- ==========================================
+       MAIN SHIP CONTENT WRAPPER
+       ========================================== -->
+  <main id="main-ship-content" class="ship-sealed">
+
+    <!-- HERO SECTION -->
+    <section class="cosmic-section hero-section" id="hero">
+      <div class="hero-edition-tag">
+        <span>// VCET ARCADE &bull; COSMIC EDITION 2026 //</span>
+      </div>
+
+      <h1 class="hero-main-title">
+        COSMIC <span class="crew-glow">CREW</span>
+      </h1>
+
+      <p class="hero-desc">
+        A <strong>30-hour immersive hackathon experience</strong> at Vidyavardhini's College of Engineering & Technology — packed with neon energy, high-stakes ship tasks, and real bounties. Complete your tasks, isolate the bugs, and survive the interstellar coding marathon!
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="#tasks" class="btn-arcade">
+          <span>VIEW SHIP TASKS // [>]</span>
+        </a>
+        <button id="btn-start-wiring-task" class="btn-arcade-outline">
+          <span>⚡ PLAY WIRING MINIGAME</span>
+        </button>
+        <button class="btn-arcade btn-emergency btn-emergency-trigger">
+          <span>🚨 EMERGENCY MEETING</span>
+        </button>
+      </div>
+
+      <!-- EVENT COUNTDOWN SCOREBOARD (MATCHING REFERENCE THEME) -->
+      <div class="scoreboard-container">
+        <div class="scoreboard-title-strip">
+          ★ EVENT COUNTDOWN SCOREBOARD ★
+        </div>
+
+        <div class="countdown-grid">
+          <div class="countdown-digit-box">
+            <span class="countdown-number" id="cd-days">02</span>
+            <span class="countdown-label">DAYS</span>
+          </div>
+          <div class="countdown-digit-box">
+            <span class="countdown-number" id="cd-hours">10</span>
+            <span class="countdown-label">HOURS</span>
+          </div>
+          <div class="countdown-digit-box">
+            <span class="countdown-number" id="cd-minutes">59</span>
+            <span class="countdown-label">MINUTES</span>
+          </div>
+          <div class="countdown-digit-box">
+            <span class="countdown-number" id="cd-seconds">19</span>
+            <span class="countdown-label">SECONDS</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS STRIP SECTION (MATCHING REFERENCE STRIP) -->
+    <section class="stats-strip-section" id="stats-strip">
+      <div class="section-header-arcade">
+        <span class="section-tag">★ HIGH SCOREBOARD // STATS STRIP ★</span>
+      </div>
+      <div class="stats-grid" id="stats-grid-container">
+        <!-- Rendered dynamically from data.js -->
+      </div>
+    </section>
+
+    <!-- 01. PROBLEM STATEMENTS / SHIP TASKS -->
+    <section class="cosmic-section" id="tasks">
+      <div class="section-header-arcade">
+        <span class="section-tag">// 01. OFFICIAL SHIP TASKS</span>
+        <h2 class="section-title">SELECT YOUR <span class="highlight-pink">BATTLEFIELD</span></h2>
+        <p class="section-subtitle">
+          Choose from 6 mission tasks. Build high-impact solutions, push technical boundaries, and claim your share of the ₹1,05,000 jackpot.
+        </p>
+      </div>
+
+      <!-- Filter Controls -->
+      <div class="tasks-filter-bar">
+        <button class="task-filter-btn active" data-filter="ALL">[ ALL TASKS ]</button>
+        <button class="task-filter-btn" data-filter="Web3">WEB3 &amp; BLOCKCHAIN</button>
+        <button class="task-filter-btn" data-filter="AI">AI &amp; AGENTS</button>
+        <button class="task-filter-btn" data-filter="Cybersecurity">CYBER DEFENSE</button>
+        <button class="task-filter-btn" data-filter="Big Data">SPACE DATA</button>
+        <button class="task-filter-btn" data-filter="FinTech">FINTECH</button>
+        <button class="task-filter-btn" data-filter="Open">OPEN INNOVATION</button>
+      </div>
+
+      <!-- Tasks Grid -->
+      <div class="tasks-grid-container" id="tasks-grid">
+        <!-- Injected via app.js -->
+      </div>
+    </section>
+
+    <!-- 02. LEVEL-BASED EVENT TIMELINE -->
+    <section class="cosmic-section" id="timeline">
+      <div class="section-header-arcade">
+        <span class="section-tag">// 02. SPRINT PROTOCOL</span>
+        <h2 class="section-title">MISSION <span class="highlight-yellow">LEVEL MAP</span></h2>
+        <p class="section-subtitle">
+          From the Pre-Stage Lobby to the Day Two Emergency Meeting finale, track every milestone across the 30-hour timeline.
+        </p>
+      </div>
+
+      <div class="timeline-track" id="timeline-levels-container">
+        <!-- Injected via app.js -->
+      </div>
+    </section>
+
+    <!-- 03. REWARD VAULT SECTION -->
+    <section class="cosmic-section" id="vault">
+      <div class="section-header-arcade">
+        <span class="section-tag">// 03. REWARD VAULT</span>
+        <h2 class="section-title">JACKPOT <span class="highlight-pink">BOUNTY MATRIX</span></h2>
+        <p class="section-subtitle">
+          Over ₹1,05,000 in cash prizes, cloud credits, gold visor trophies, and incubation grants waiting to be claimed.
+        </p>
+      </div>
+
+      <div class="vault-header-controls">
+        <button id="btn-currency-toggle" class="btn-arcade-outline">
+          CURRENCY: [ INR ]
+        </button>
+        <button id="interactive-vault-chest" class="btn-arcade">
+          <span>📦 CLICK TO UNLOCK MYSTERY CHEST</span>
+        </button>
+      </div>
+
+      <!-- Top 5 Prizes -->
+      <div class="prizes-grid" id="top-prizes-grid">
+        <!-- Injected via app.js (₹50k 1st to ₹5k 5th) -->
+      </div>
+
+      <!-- Special Bounties -->
+      <div class="bounties-container">
+        <h3 class="bounties-title">// SPECIAL TRACK BOUNTIES (₹5,000 EACH)</h3>
+        <div class="bounties-grid" id="bounties-grid">
+          <!-- Injected via app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 04. SPONSORS FLEET -->
+    <section class="cosmic-section" id="sponsors">
+      <div class="section-header-arcade">
+        <span class="section-tag">// 04. FLEET ALLIES</span>
+        <h2 class="section-title">MISSION <span class="highlight-yellow">BACKERS &amp; SPONSORS</span></h2>
+        <p class="section-subtitle">
+          Empowering the Cosmic Crew with cutting-edge cloud infrastructure, developer APIs, and mentorship fuel.
+        </p>
+      </div>
+
+      <div id="sponsors-fleet-container">
+        <!-- Injected via app.js -->
+      </div>
+    </section>
+
+    <!-- 05. MEMORY HOLO-ARCHIVE (GALLERY) -->
+    <section class="cosmic-section" id="gallery">
+      <div class="section-header-arcade">
+        <span class="section-tag">// 05. HOLO-ARCHIVE</span>
+        <h2 class="section-title">CREW <span class="highlight-pink">MEMORIES</span></h2>
+        <p class="section-subtitle">
+          Snapshots from past hackathon missions, midnight debugging sessions, and championship glory.
+        </p>
+      </div>
+
+      <div class="gallery-grid" id="gallery-grid">
+        <!-- Injected via app.js with uploaded photos -->
+      </div>
+    </section>
+
+    <!-- 06. CENTRAL FAQ TERMINAL -->
+    <section class="cosmic-section" id="faq">
+      <div class="section-header-arcade">
+        <span class="section-tag">// 06. CENTRAL TERMINAL</span>
+        <h2 class="section-title">CREW PROTOCOL <span class="highlight-yellow">&amp; FAQ</span></h2>
+        <p class="section-subtitle">
+          Got questions before stepping into the airlock? Query our central ship database below.
+        </p>
+      </div>
+
+      <div class="faq-search-wrap">
+        <input type="text" id="faq-search-input" class="faq-search-input" placeholder="SEARCH QUERY // [e.g. team size, beginner, fees]..." />
+      </div>
+
+      <div class="faq-accordion" id="faq-accordion-container">
+        <!-- Injected via app.js -->
+      </div>
+    </section>
+
+    <!-- 07. EMERGENCY COMMS ARRAY (CONTACT & SOS) -->
+    <section class="cosmic-section" id="contact">
+      <div class="section-header-arcade">
+        <span class="section-tag">// 07. EMERGENCY COMMS</span>
+        <h2 class="section-title">TRANSMIT <span class="highlight-pink">SOS SIGNAL</span></h2>
+        <p class="section-subtitle">
+          Need assistance or want to partner with the fleet? Broadcast your signal to our communications array.
+        </p>
+      </div>
+
+      <div class="comms-wrapper">
+        <div class="comms-info-panel">
+          <h3 class="comms-heading">// COMMAND BEACONS</h3>
+
+          <div class="comms-beacon-list">
+            <div class="beacon-item">
+              <div class="beacon-icon">📍</div>
+              <div>
+                <span class="beacon-title">COORDINATES (VENUE)</span>
+                <span class="beacon-val">Vidyavardhini's College of Engg &amp; Tech, Vasai Road (W), Mumbai</span>
+              </div>
+            </div>
+
+            <div class="beacon-item">
+              <div class="beacon-icon">💬</div>
+              <div>
+                <span class="beacon-title">DISCORD DROPSHIP</span>
+                <span class="beacon-val">discord.gg/cosmic-crew-2026</span>
+              </div>
+            </div>
+
+            <div class="beacon-item">
+              <div class="beacon-icon">📡</div>
+              <div>
+                <span class="beacon-title">FREQUENCY (EMAIL)</span>
+                <span class="beacon-val">crew@cosmic-hackathon.space</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hud-panel">
+            <span class="text-cyan">// MOTHERSHIP SECURITY PROTOCOL:</span>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 6px;">
+              All transmissions are 256-bit quantum encrypted. Sabotage attempts will be quarantined by the shield array.
+            </p>
+          </div>
+        </div>
+
+        <div class="comms-form-panel">
+          <form id="comms-sos-form">
+            <div class="comms-input-group">
+              <label class="comms-label" for="comms-callsign">// CREWMATE CALLSIGN (NAME)</label>
+              <input type="text" id="comms-callsign" class="comms-input" placeholder="e.g. Captain Alex" required />
+            </div>
+
+            <div class="comms-input-group">
+              <label class="comms-label" for="comms-email">// SUB-SPACE FREQUENCY (EMAIL)</label>
+              <input type="email" id="comms-email" class="comms-input" placeholder="alex@starfleet.org" required />
+            </div>
+
+            <div class="comms-input-group">
+              <label class="comms-label" for="comms-message">// TRANSMISSION DATA (QUERY / PROPOSAL)</label>
+              <textarea id="comms-message" class="comms-textarea" placeholder="State your inquiry or request..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-arcade" style="width: 100%;">
+              <span>DISPATCH SOS TRANSMISSION // [SEND]</span>
+            </button>
+          </form>
+
+          <div class="transmission-console" id="transmission-console-log">
+            <div class="console-line text-cyan">&gt; COMMS ARRAY STANDBY... AWAITING TRANSMISSION.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================
+       MODALS
+       ========================================== -->
+
+  <!-- Task Detail Modal -->
+  <div class="cosmic-modal-overlay" id="task-modal">
+    <div class="cosmic-modal-container">
+      <button class="modal-close-btn" id="close-task-modal">[X] CLOSE</button>
+      <div id="task-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Fix Wiring Mini-Game Modal -->
+  <div class="cosmic-modal-overlay" id="wiring-modal">
+    <div class="cosmic-modal-container">
+      <button class="modal-close-btn" id="close-wiring-modal">[X] CLOSE</button>
+      <div id="wiring-game-container"></div>
+    </div>
+  </div>
+
+  <!-- Emergency Meeting Modal -->
+  <div class="cosmic-modal-overlay" id="emergency-modal">
+    <div class="cosmic-modal-container">
+      <button class="modal-close-btn" id="close-emergency-modal">[X] CLOSE</button>
+      <div id="emergency-modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Gallery Lightbox Modal -->
+  <div class="cosmic-modal-overlay" id="gallery-lightbox-modal">
+    <div class="cosmic-modal-container" style="max-width: 800px; text-align: center;">
+      <button class="modal-close-btn" id="close-gallery-modal">[X] CLOSE</button>
+      <img id="lightbox-image" src="" alt="Crew Memory" style="max-width: 100%; max-height: 65vh; object-fit: contain; border: 2px solid var(--cyan);" />
+      <h3 id="lightbox-title" style="font-family: var(--font-pixel); font-size: 1rem; color: #fff; margin-top: 16px;"></h3>
+      <p id="lightbox-caption" style="font-family: var(--font-body); font-size: 0.9rem; color: var(--text-muted); margin-top: 8px;"></p>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       FOOTER
+       ========================================== -->
+  <footer class="cosmic-footer">
+    <div class="footer-brand">COSMIC CREW // 2026</div>
+    <p class="footer-copy">
+      Built for Hackers, Visionaries &amp; Impostor Hunters with &hearts; at Vidyavardhini's College of Engineering &amp; Technology.
+    </p>
+    <div class="footer-badges">
+      <span class="stat-tag">// ZERO_IMPOSTORS_ALLOWED</span>
+      <span class="stat-tag">// ALL_SYSTEMS_NOMINAL</span>
+      <span class="stat-tag">// 30H_WARP_DRIVE</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/canvas.js"></script>
+  <script src="js/minigame.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

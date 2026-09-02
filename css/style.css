@@ -1,0 +1,331 @@
+/* ==========================================================================
+   COSMIC CREW - CORE STYLES & RETRO ARCADE THEME SYSTEM
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Color Palette */
+  --bg-deep: #050811;
+  --bg-space: #070c18;
+  --bg-deck: #0b1325;
+  --bg-card: #0f1930;
+  --bg-card-hover: #152244;
+  --bg-panel: rgba(15, 25, 48, 0.85);
+
+  --cyan: #00f0ff;
+  --cyan-dark: #008899;
+  --pink: #ff007f;
+  --yellow: #ffe600;
+  --green: #00ff66;
+  --purple: #a855f7;
+  --orange: #ff7700;
+  --red: #ff2a2a;
+  
+  --crew-red: #c51111;
+  --crew-cyan: #38fedc;
+  --crew-lime: #50ef39;
+  --crew-pink: #ed54ba;
+  --crew-yellow: #f5f557;
+
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+
+  --border-cyan: rgba(0, 240, 255, 0.6);
+  --border-pink: rgba(255, 0, 127, 0.6);
+  --border-yellow: rgba(255, 230, 0, 0.6);
+  --border-deck: #1e293b;
+
+  /* Neon Glows */
+  --glow-cyan: 0 0 15px rgba(0, 240, 255, 0.5), 0 0 30px rgba(0, 240, 255, 0.2);
+  --glow-pink: 0 0 15px rgba(255, 0, 127, 0.5), 0 0 30px rgba(255, 0, 127, 0.2);
+  --glow-yellow: 0 0 15px rgba(255, 230, 0, 0.5), 0 0 30px rgba(255, 230, 0, 0.2);
+  --glow-green: 0 0 15px rgba(0, 255, 102, 0.5);
+
+  /* Fonts */
+  --font-pixel: 'Press Start 2P', monospace;
+  --font-arcade: 'VT323', monospace;
+  --font-silk: 'Silkscreen', monospace;
+  --font-scifi: 'Orbitron', sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Transitions */
+  --ease-arcade: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Reset & Base Setup */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* Background Canvas Layer */
+#space-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+/* Retro Grid Ambient Overlay */
+.cyber-grid-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: 
+    linear-gradient(rgba(0, 240, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* CRT Scanline Shader */
+#crt-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.03),
+    rgba(0, 255, 0, 0.01),
+    rgba(0, 0, 255, 0.03)
+  );
+  background-size: 100% 4px, 6px 100%;
+  pointer-events: none;
+  z-index: 999;
+  transition: opacity 0.3s ease;
+}
+
+#crt-overlay.crt-disabled {
+  opacity: 0;
+}
+
+/* Emergency Red Flashing Overlay */
+body.emergency-siren-active::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle, rgba(255, 0, 0, 0.3) 0%, rgba(255, 0, 0, 0.8) 100%);
+  pointer-events: none;
+  z-index: 9999;
+  animation: sirenFlash 0.35s ease-in-out infinite alternate;
+}
+
+@keyframes sirenFlash {
+  0% { opacity: 0.2; }
+  100% { opacity: 0.85; }
+}
+
+/* Main Ship Container */
+#main-ship-content {
+  position: relative;
+  z-index: 10;
+  transition: filter 0.8s ease, transform 0.8s ease;
+}
+
+#main-ship-content.ship-sealed {
+  filter: blur(10px) brightness(0.4);
+  pointer-events: none;
+  user-select: none;
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+#main-ship-content.ship-active {
+  filter: blur(0px) brightness(1);
+  pointer-events: auto;
+  user-select: auto;
+  max-height: none;
+  overflow: visible;
+}
+
+/* Section Wrapper */
+.cosmic-section {
+  position: relative;
+  padding: 100px 24px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* Section Headers - Arcade Style */
+.section-header-arcade {
+  text-align: center;
+  margin-bottom: 50px;
+  position: relative;
+}
+
+.section-tag {
+  font-family: var(--font-arcade);
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+  color: var(--cyan);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+
+.section-title {
+  font-family: var(--font-pixel);
+  font-size: clamp(1.4rem, 4vw, 2.4rem);
+  letter-spacing: -1px;
+  line-height: 1.3;
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+  margin-bottom: 14px;
+}
+
+.section-title span.highlight-pink {
+  color: var(--pink);
+  text-shadow: 0 0 10px rgba(255, 0, 127, 0.6);
+}
+
+.section-title span.highlight-yellow {
+  color: var(--yellow);
+  text-shadow: 0 0 10px rgba(255, 230, 0, 0.6);
+}
+
+.section-subtitle {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+/* Pixel Buttons */
+.btn-arcade {
+  font-family: var(--font-pixel);
+  font-size: 0.85rem;
+  background-color: var(--cyan);
+  color: #050811;
+  padding: 14px 28px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 4px 4px 0px #000, var(--glow-cyan);
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-decoration: none;
+  text-transform: uppercase;
+  position: relative;
+}
+
+.btn-arcade:hover {
+  background-color: #70ffe6;
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #000, var(--glow-cyan);
+}
+
+.btn-arcade:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #000;
+}
+
+.btn-arcade-outline {
+  font-family: var(--font-pixel);
+  font-size: 0.8rem;
+  background-color: transparent;
+  color: var(--cyan);
+  border: 2px solid var(--cyan);
+  padding: 12px 22px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.btn-arcade-outline:hover {
+  background-color: rgba(0, 240, 255, 0.15);
+  box-shadow: var(--glow-cyan);
+  transform: translateY(-2px);
+}
+
+.btn-emergency {
+  background-color: var(--red);
+  color: #ffffff;
+  border: 2px solid #ff7777;
+  box-shadow: 4px 4px 0px #000, 0 0 15px rgba(255, 42, 42, 0.6);
+}
+
+.btn-emergency:hover {
+  background-color: #ff4d4d;
+  box-shadow: 6px 6px 0px #000, 0 0 25px rgba(255, 42, 42, 0.9);
+}
+
+/* Retro HUD Panel Box */
+.hud-panel {
+  background: var(--bg-card);
+  border: 2px solid var(--cyan);
+  position: relative;
+  padding: 24px;
+  box-shadow: var(--glow-cyan);
+}
+
+.hud-panel::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  width: 10px;
+  height: 10px;
+  background: var(--pink);
+}
+
+.hud-panel::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  right: -6px;
+  width: 10px;
+  height: 10px;
+  background: var(--cyan);
+}
+
+/* Helpers */
+.glow-text {
+  text-shadow: 0 0 12px currentColor;
+}
+
+.text-cyan { color: var(--cyan); }
+.text-pink { color: var(--pink); }
+.text-yellow { color: var(--yellow); }
+.text-green { color: var(--green); }
+
+.mt-6 { margin-top: 24px; }
+.mb-6 { margin-bottom: 24px; }
