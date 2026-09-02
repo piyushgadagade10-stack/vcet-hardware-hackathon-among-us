@@ -6,6 +6,7 @@ An interactive web-based project built for the hardware hackathon. This reposito
 - Interactive web interface inspired by the Among Us theme.
 - Responsive design tailored for smooth navigation.
 - Integrated hardware hackathon components and assets.
+- WEBSITE LINK:our site is live at https://piyushgadagade10-stack.github.io/vcet-hardware-hackathon-among-us/
 
 ## 📂 Project Structure
 - `index.html` - The main entry point of the web application.
